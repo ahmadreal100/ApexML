@@ -1,0 +1,64 @@
+@using Apex.Service.Translations
+@model Apex.Web.Areas.Theme1.Models.DataViewModels.SearchViewData
+
+<div class="row justify-content-center my-5">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 my-2">
+        <div class="card">
+            <div class="card-header">
+                <h6>@Str.filters</h6>
+            </div>
+            <div class="card-body text-8">
+                <p><b>@Str.keyword : </b><span id="searchKeyword">@Model.Keyword</span></p>
+                @if (Model.Categories.Any())
+                {
+                    <div>
+                        <hr class="dashed" />
+                        <b class="d-block mb-2">@Str.category : </b>
+                        <div id="catItems" class="nested-cats px-2">
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <a data-id="@cat.Id" href="@cat.Link"><span>@cat.Name</span></a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-9 my-2">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    <span>@Str.searchResult</span>
+                    <small id="searchResultCount" class="text-theme1"></small>
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="productItems" class="row products">
+
+                </div>
+            </div>
+            <div id="pgBox" class="card-footer" style="display: none">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-8 text-muted">@Str.page : <span id="pgInfo"></span></span>
+                    <div class="pagination" id="pgBtns"></div>
+                    <div class="d-flex align-items-center">
+                        <span class="ws-pre text-8 text-muted">@Str.numberOfShow : </span>
+                        <select id="selPgSize" class="form-control custom-select custom-select-sm">
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section script
+{
+    <script src="~/Areas/Theme1/Scripts/Build/product/search.js"></script>
+}

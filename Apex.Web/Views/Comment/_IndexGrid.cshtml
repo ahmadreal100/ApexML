@@ -1,0 +1,50 @@
+﻿@using Apex.Service.ViewModels.Shop
+@model IQueryable<Apex.Service.ViewModels.Shop.CommentViewModel>
+
+@(Html
+      .Grid(Model)
+      .Build(columns =>
+      {
+          columns.Add().Titled("#").Css("ar-rear-no").Sortable(false).Filterable(false);
+          columns.Add(x => x.Id).Titled("کد");
+          columns.Add(x => x.UserUserName).Titled("موبایل");
+          columns.Add(x => x.Seen).Titled("خوانده").Css("text-center").RenderedAs(SeenColumn).WithFilterOptions(new List<SelectListItem>
+          {
+              new SelectListItem {Value = "True", Text = "خوانده شده"},
+              new SelectListItem {Value = "False", Text = "خوانده نشده"}
+          });
+          columns.Add().Titled("").RenderedAs(OptionColumn).Filterable(false).Sortable(false);
+      })
+      .Empty("موردی یافت نشد")
+      .Id("commentGrid")
+      .Pageable(pager =>
+      {
+          pager.PageSizes = App.MvcGridPagerSizes;
+          pager.PagesToDisplay = 5;
+          pager.RowsPerPage = 10;
+          pager.ShowPageSizes = true;
+      })
+      .Filterable()
+      .Sortable()
+      .AppendCss("table-hover")
+      )
+
+@helper OptionColumn(CommentViewModel obj)
+{
+    <div class="el-options">
+        <i class="fa fa-ellipsis-v"></i>
+        <ul>
+            <li>
+                <a data-delcomment="@obj.Id" data-text="دیدگاه @( obj.Id)"><i class="fa fa-trash"></i>حذف</a>
+            </li>
+            <li>
+                <a data-showcomment="@obj.Id"><i class="fa fa-eye"></i>نمایش</a>
+            </li>
+        </ul>
+    </div>
+}
+
+@helper SeenColumn(CommentViewModel obj)
+{
+    <i class="fa @( obj.Seen ? "fa-eye font-grey-steel" : "fa-eye-slash font-green-seagreen")" title="@(obj.Seen?"خوانده شده":"خوانده نشده")"></i>
+}

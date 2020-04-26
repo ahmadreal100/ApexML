@@ -1,0 +1,53 @@
+﻿@using Apex.Service.ViewModels.Shop
+@section styles
+{
+    <link rel="stylesheet" type="text/css" href="~/Content/MvcGrid/mvc-grid.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/select2/select2.css">
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <div id="AddSliderContainer">
+            @Html.Partial("Content/_AddSlider", new SliderViewModel())
+        </div>
+        <!-- /.modal -->
+        <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet green box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-picture-o"></i>اسلایدر
+                        </div>
+                        <div class="tools">
+                            <a id="btnShMdlAddSlider" class="btn default yellow-stripe btn-sm">
+                                <i class="fa fa-plus"></i>
+                                اسلایدر جدید
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-scrollable">
+                            @Html.AjaxGrid(Url.Action("IndexGrid"))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/MvcGrid/mvc-grid.min.js"></script>
+    <script src="~/Scripts/MvcGrid/mvc-grid-fa.js?@App.GV"></script>
+    <script src="~/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/handlebars-v4.0.11.js"></script>
+    <script src="~/Scripts/Content/slider.js?@App.GV"></script>
+}

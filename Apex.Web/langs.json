@@ -1,0 +1,16 @@
+﻿[
+  {
+    "Name": "فارسی",
+    "Locale": "fa",
+    "Rtl": true,
+    "IsDefault": true,
+    "PicLink": "/assets/global/img/flags/ir.png"
+  },
+  {
+    "Name": "English",
+    "Locale": "en",
+    "Rtl": false,
+    "IsDefault": false,
+    "PicLink": "/assets/global/img/flags/gb.png"
+  }
+]

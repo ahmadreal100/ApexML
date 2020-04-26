@@ -1,0 +1,12 @@
+﻿@using Apex.Service.Translations
+@using Apex.Web.Helpers
+@model Apex.Service.ViewModels.Shop.ProductThumbUiModel
+<div class="product-box">
+    <a href="@Model.Link" class="d-block">
+        <img class="img-responsive" src="@Model.PicLink.Scale(375,375)" onerror="imgAlt(this,'@ImageHelper.Nf1.Scale(375,375,"#f9f9f9")')" alt="@Model.Name" />
+    </a>
+    <span class="ttl">@Model.Name</span>
+    <a class="read" href="@Model.Link">
+        <span>@Str.readMore</span><i class="fa fa-angle-double-right"></i>
+    </a>
+</div>

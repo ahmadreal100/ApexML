@@ -1,0 +1,86 @@
+@using Apex.Service.Translations
+@using Apex.Shared.Helpers
+@using Apex.Web.Helpers
+@model Apex.Web.Areas.Theme1.Models.DataViewModels.ProductDetailsViewData
+@{
+    var p = Model.Product;
+}
+@section style
+{
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/owl.theme.default.min.css" />
+}
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-10 my-5">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h2 class="text-theme1 text-15 m-0">
+                    @p.Title
+                </h2>
+                <bdi>
+                    <small class="text-secondary"><bdi>@p.AddedDate.ToCalendar("dd MMMM yyyy")</bdi></small>
+                </bdi>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="pd-img">
+                        <div class="owl-carousel">
+                            @foreach (var pic in p.OrderedPicture)
+                            {
+                                <img src="@pic.Link.Scale(375, 375)" onerror="imgAlt(this,'@ImageHelper.Nf1.Scale(375, 375, "#f9f9f9")')" />
+                            }
+                        </div>
+                    </div>
+                    @Html.Raw(p.FullDescription)
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex align-items-center">
+                    <small>@Str.tags : </small>
+                    <div class="pd-labels mx-2">
+                        @foreach (var tag in p.Tags)
+                        {
+                            <a href="@Url.RouteUrl("Search",new {keyword=tag.Title})">@tag.Title</a>
+                        }
+                    </div>
+                </div>
+                <hr class="dashed" />
+                <div class="d-flex align-items-center">
+                    <small>@Str.category : </small>
+                    <div class="pd-cats text-8 mx-2">
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <a href="@cat.Link">@cat.Name</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.RelatedProducts.Any())
+        {
+            <div class="card mt-4">
+                <div class="card-header ">
+                    <h6 class="text-9 m-0 text-center">
+                        @Str.relatedPosts
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row products">
+                        @foreach (var pd in Model.RelatedProducts)
+                        {
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                                @Html.Partial("Product/_ProductThumb", pd)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section script
+{
+    <script src="~/Areas/Theme1/Scripts/owl.carousel.min.js"></script>
+    <script src="~/Areas/Theme1/Scripts/Build/product/index.js"></script>
+}

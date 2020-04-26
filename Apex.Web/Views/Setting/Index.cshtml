@@ -1,0 +1,133 @@
+﻿@model Apex.Service.ViewModels.Setting.SettingViewModel
+@section styles
+{
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet green box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-gears"></i>تنظیمات
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="row mt-5 mx-0">
+                            <div class="col-xs-12">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tabTheme" data-toggle="tab">قالب</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade active in" id="tabTheme">
+                                        @using (Ajax.BeginForm("UpdateTheme", "Setting", null, new AjaxOptions { HttpMethod = "Post", OnComplete = "updateComplete" }, new { autocomplete = "off", @class = "form-horizontal" }))
+                                        {
+                                            <!-- BEGIN FORM-->
+                                            @Html.AntiForgeryToken()
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.FullDescription, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.FullDescription, new { rows = 4, @class = "form-control mw-100" })
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.FullDescription)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.HtmlContent, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.HtmlContent)
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.HtmlContent)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.FooterText, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.FooterText, new { rows = 4, @class = "form-control mw-100" })
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.FooterText)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.CopyrightText, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.CopyrightText, new { rows = 4, @class = "form-control mw-100" })
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.CopyrightText)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.PrivacyText, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.PrivacyText, new { rows = 4, @class = "form-control mw-100" })
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.PrivacyText)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*<div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="col-xs-12">
+                                                                @Html.LabelFor(model => model.ThemeSetting.LawsText, new { @class = "control-label" })
+                                                            </div>
+                                                            <div class="col-xs-12 pos-relative">
+                                                                @Html.TextAreaFor(model => model.ThemeSetting.LawsText, new { rows = 4, @class = "form-control mw-100" })
+                                                                @Html.ValidationMessageFor(model => model.ThemeSetting.LawsText)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+                                            </div>
+                                            <!-- END FORM-->
+                                            <div class="modal-footer text-center">
+                                                <button type="submit" class="btn green"><i class="fa fa-check"></i>ذخیره تغییرات</button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row"></div>
+                                <div class="clearfix margin-bottom-20"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="~/assets/global/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/assets/global/plugins/ckeditor/lang/fa.js"></script>
+    <script src="~/Scripts/Content/setting.js?@App.GV"></script>
+}

@@ -1,0 +1,64 @@
+﻿@using Apex.Service.ViewModels.Shop
+
+@section styles
+{
+    <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/jstree/dist/themes/default/style.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/select2/select2.css">
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <div id="AddCategoryContainer">
+            @Html.Partial("Shop/_AddCategory", new CategoryViewModel())
+        </div>
+        <!-- /.modal -->
+        <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet blue-hoki box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-cogs"></i>دسته بندی مطالب
+                        </div>
+                        <div class="tools">
+                            <a id="btnShMdlAddCategoryRoot" class="btn default yellow-stripe btn-sm pull-right">
+                                <i class="fa fa-plus"></i>
+                                افزودن دسته ریشه
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body overflowx-auto">
+                        @* ReSharper disable once UnknownCssClass *@
+                        <div id="tree_1" class="tree-demo"></div>
+                        <h3 id="lblNoTreeResult" class="text-center font-grey-silver my-5 py-5">بدون دسته بندی</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+</div>
+<!--------------------------------------- Templates -------------------------------------->
+<script id="nodeTemplate" type="text/x-handlebars-template">
+    <span>
+        <span indic-up="{{Id}}">{{Name}}</span>
+        <i class="fa fa-trash text-danger" data-delnode="{{Id}}" data-text="{{Name}}" title="حذف"></i>
+        <i class="fa fa-edit text-primary" data-editnode="{{Id}}" title="ویرایش"></i>
+        <i class="fa fa-plus text-success" data-addnode="{{Id}}" data-text="{{Name}}" title="افزودن زیردسته"></i>
+    </span>
+</script>
+<!--------------------------------------- Templates -------------------------------------->
+
+@section scripts
+{
+    <script src="~/assets/global/plugins/jstree/dist/jstree.min.js"></script>
+    <script src="~/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/handlebars-v4.0.11.js"></script>
+    <script src="~/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/Shop/category.js?@App.GV"></script>
+}

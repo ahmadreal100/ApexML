@@ -1,0 +1,52 @@
+﻿@using Apex.Service.ViewModels.Shop
+@model CategoryViewModel
+@{
+    var parent = (CategoryViewModel)ViewBag.Parent ?? new CategoryViewModel();
+}
+<div class="modal fade" id="mdlAddCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">@(Model != null && Model.Id > 0 ? "ویرایش دسته بندی" : "دسته بندی جدید")</h4>
+            </div>
+            @using (Ajax.BeginForm("AddOrUpdate", "Category", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "addCategoryConfirm" }, new { @class = "form-horizontal" }))
+            {
+                <div class="modal-body">
+                    <!-- BEGIN FORM-->
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.ParentId)
+                    @Html.AntiForgeryToken()
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label("گروه سرشاخه", new { @for = "GroupText", @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.TextBox("ParentText", parent.Name, new { disabled = "disabled", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Name)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn green pull-right"><i class="fa fa-check"></i>ذخیره تغییرات</button>
+                    <button type="button" class="btn default pull-left" data-dismiss="modal">انصراف</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

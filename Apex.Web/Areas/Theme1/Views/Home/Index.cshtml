@@ -1,0 +1,48 @@
+@using Apex.Service.Translations
+@using Apex.Service.ViewModels.Setting
+@using Apex.Shared.Extensions
+@using Apex.Web.Helpers
+@model Apex.Web.Areas.Theme1.Models.DataViewModels.IndexViewData
+@{
+
+    var setting = (SettingViewModel)ViewBag.SiteSetting ?? new SettingViewModel();
+    var theme = setting.ThemeSetting ?? new ThemeSettingViewModel();
+}
+@section style
+{
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/owl.theme.default.min.css" />
+}
+<div class="row">
+    <div class="col p-0">
+        @if (!theme.HtmlContent.IsNeu())
+        {
+            <div class="my-4 p-4 text-center">
+                @Html.Raw(theme.HtmlContent)
+            </div>
+        }
+        <div class="slider owl-carousel my-4">
+            @foreach (var p in Model.Slider0.OrderedPictures)
+            {
+                <div>
+                    <a><img src="@p.Link.Scale(1600, 500)" /></a>
+                </div>
+            }
+        </div>
+        <h5 class="bg-tools bg-dark text-center text-light py-2 my-4">@Str.last.Ft(Str.posts)</h5>
+        <div class="row products my-4 px-4">
+            @foreach (var p in Model.LastProducts)
+            {
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    @Html.Partial("Product/_ProductThumb", p)
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section script
+{
+    <script src="~/Areas/Theme1/Scripts/owl.carousel.min.js"></script>
+    <script src="~/Areas/Theme1/Scripts/Build/home/index.js"></script>
+}

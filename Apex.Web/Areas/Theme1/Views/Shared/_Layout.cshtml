@@ -1,0 +1,128 @@
+﻿@using Apex.Core.Entities.UserE
+@using Apex.DAL.Helpers
+@using Apex.Service.Translations
+@using Apex.Service.ViewModels.Account
+@using Apex.Service.ViewModels.Setting
+@using Apex.Shared.Extensions
+@using Apex.Web.Helpers
+@{
+    //var userInfo = (User)ViewBag.UserInfo ?? new User();
+    var setting = (SettingViewModel)ViewBag.SiteSetting ?? new SettingViewModel();
+    var info = setting.BaseUserInfo ?? new MasterInfoViewModel();
+    var theme = setting.ThemeSetting ?? new ThemeSettingViewModel();
+    var langs = SessionHelper.Languages;
+    var url = Request.GetUrl();
+    var userInfo = (User)ViewBag.UserInfo ?? new User();
+    var isMain = url.Eq("/home/index") || url.Eq("/product/search");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/font-awesome.min.css" />
+    <link href="~/Areas/Theme1/Content/sweetalert2.min.css" rel="stylesheet" />
+    @RenderSection("style", false)
+    @if (CultureHelper.CurrentLanguage().Locale.Eq("fa"))
+    {
+        <link rel="stylesheet" href="~/Areas/Theme1/Content/base-rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/Areas/Theme1/Content/base.min.css" />
+    }
+    <link rel="stylesheet" href="~/Areas/Theme1/Content/site.min.css" />
+    <script src="~/Locals/@(CultureHelper.CurrentLanguage().Locale.ToLower()).js"></script>
+</head>
+<body dir="@(CultureHelper.IsRtl ? "rtl" : "ltr")">
+<div id="gLoading"></div>
+<input id="appVal" type="hidden"
+       data-lang="@(CultureHelper.CurrentLanguage().Locale.ToLower())"/>
+<div>
+    <div class="top-box@(isMain ? "" : " no-main")">
+        <header>
+            <a href="@Url.RouteUrl("Home")" class="logo"><img src="@info.LogoLink.Scale(100, 42)"/></a>
+            <div class="menus">
+                <div class="menu-box">
+                    <a href="@Url.RouteUrl("Home")" class="menu-item">@Str.homePage</a>
+                    <a href="@Url.RouteUrl("Contact")" class="menu-item">@Str.contactUs</a>
+                    <a href="@Url.RouteUrl("Privacy")" class="menu-item">@Str.privacy</a>
+                    <a href="@Url.RouteUrl("About")" class="menu-item">@Str.about</a>
+                    <span class="cls" onclick="$('.menus').toggleClass('show')">&times;</span>
+                </div>
+                <div class="acc-box">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <a href="@Url.RouteUrl("LogOut")" class="menu-item" title="@Str.logout"><i class="fa fa-sign-out"></i>@userInfo.PhoneNumber</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.RouteUrl("LogIn")" class="menu-item">@Str.logIn</a>
+                        <a href="@Url.RouteUrl("Register")" class="menu-item">@Str.register</a>
+                    }
+                </div>
+            </div>
+            <i class="fa fa-bars tgl-menu"
+               onclick="$('.menus').toggleClass('show')"></i>
+        </header>
+
+        <div class="site-name">@info.BusinessName</div>
+
+        <div class="search-wrapper">
+            <div class="cat-box" id="btnMainCat">
+                <span>@Str.categories</span>
+                <i class="fa fa-angle-down"></i>
+            </div>
+            <span class="split"></span>
+            <div class="search-box">
+                <input placeholder="@(Str.searchEveryThings)..." autocomplete="off"/>
+                <i class="fa fa-search"></i>
+            </div>
+            <div id="mainCats" class="category-items"></div>
+        </div>
+    </div>
+    <section style="min-height: 492px;">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </section>
+    <footer>
+        <div class="ct">
+            <span>@Str.address : <bdi>@info.Address</bdi></span>
+            <span>@Str.phone : <bdi>@info.PhoneNumber</bdi></span>
+            <span>@Str.mobile : <bdi>@info.Mobile</bdi></span>
+            <span>
+                <bdi class="ftext">@theme.FooterText</bdi>
+            </span>
+
+            <small>
+                <i class="fa fa-globe"></i>
+                @foreach (var lang in langs)
+                {
+                    <a href="@CultureHelper.SetLanguage(Request.Url?.AbsoluteUri ?? "", lang)" class="text-white text-hover-theme1">@lang.Name</a>
+                    <span class="text-white mx-1 hide-last">|</span>
+                }
+            </small>
+        </div>
+        <div class="mnu">
+            <a href="@Url.RouteUrl("Home")">@Str.homePage</a>
+            <a href="@Url.RouteUrl("Contact")">@Str.contactUs</a>
+            <a href="@Url.RouteUrl("About")">@Str.about</a>
+            <a href="@Url.RouteUrl("Privacy")">@Str.privacy</a>
+        </div>
+    </footer>
+    <div class="bg-theme1 text-center text-white py-2">
+        <small>@theme.CopyrightText</small>
+    </div>
+</div>
+<script src="~/Areas/Theme1/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Areas/Theme1/Scripts/sweetalert2.all.min.js"></script>
+<script src="~/Areas/Theme1/Scripts/Build/base/helpers.js"></script>
+@RenderSection("script", false)
+<script src="~/Areas/Theme1/Scripts/Build/base/site.js"></script>
+</body>
+</html>

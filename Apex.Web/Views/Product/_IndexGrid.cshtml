@@ -1,0 +1,50 @@
+﻿@using Apex.Core
+@using Apex.Service.ViewModels.Shop
+@model IQueryable<Apex.Service.ViewModels.Shop.ProductViewModel>
+@{
+    var requestInfo = (RequestInfo) ViewBag.RequestInfo ?? new RequestInfo();
+}
+@(Html
+      .Grid(Model)
+      .Build(columns =>
+      {
+          columns.Add().Titled("#").Css("ar-rear-no").Sortable(false).Filterable(false);
+          columns.Add(x => x.Title).Titled("نام").RenderedAs(NameColumn);
+          columns.Add().Titled("").Sortable(false).Filterable(false).RenderedAs(x => OptionColumn(x, requestInfo));
+      })
+      .Empty("موردی یافت نشد")
+      .Id("indexGrid")
+      .Pageable(pager =>
+      {
+          pager.PageSizes = App.MvcGridPagerSizes;
+          pager.PagesToDisplay = 5;
+          pager.RowsPerPage = 10;
+          pager.ShowPageSizes = true;
+      })
+      .Filterable()
+      .Sortable()
+      .AppendCss("table-hover")
+      )
+
+@helper NameColumn(ProductViewModel obj)
+{
+    <img src="@( obj.OrderedPicture.Any() ? obj.OrderedPicture.First().Link : App.NoPic)"
+         class="img-tbl" alt="@obj.Title" title="@obj.Title"/>
+    <span>@obj.Title</span>
+}
+
+
+@helper OptionColumn(ProductViewModel obj, RequestInfo requestInfo)
+{
+    <div class="el-options">
+        <i class="fa fa-ellipsis-v"></i>
+        <ul>
+            <li>
+                <a data-delproduct="@obj.Id" data-text="@obj.Title"><i class="fa fa-trash"></i>حذف</a>
+            </li>
+            <li>
+                <a data-editproduct="@obj.Id"><i class="fa fa-edit"></i>ویرایش</a>
+            </li>
+        </ul>
+    </div>
+}

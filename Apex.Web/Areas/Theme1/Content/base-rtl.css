@@ -1,0 +1,5 @@
+﻿@font-face {
+  font-family: "IranSans";
+  src: url("../fonts/IRANSans_Web/IRANSans_Web_FaNum/eot/IRANSansWeb_FaNum_Light.eot");
+  src: url("../fonts/IRANSans_Web/IRANSans_Web_FaNum/eot/IRANSansWeb_FaNum_Light.eot?#iefix") format("embedded-opentype"), url("../fonts/IRANSans_Web/IRANSans_Web_FaNum/woff2/IRANSansWeb_FaNum_Light.woff2") format("woff2"), url("../fonts/IRANSans_Web/IRANSans_Web_FaNum/woff/IRANSansWeb_FaNum_Light.woff") format("woff"), url("../fonts/IRANSans_Web/IRANSans_Web_FaNum/ttf/IRANSansWeb_FaNum_Light.ttf") format("truetype");
+  font-weight: normal; }

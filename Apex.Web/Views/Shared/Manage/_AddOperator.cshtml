@@ -1,0 +1,91 @@
+﻿@using Apex.Core.Enums
+@model Apex.Service.ViewModels.Account.UserViewModel
+@{
+    var types = EnumHelper.GetSelectList(typeof(UserType)).Where(x => x.Value != ((int)UserType.Admin).ToString());
+    var isUpdate = Model.Id > 0;
+}
+<div class="modal fade" id="mdlAddOperator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">کاربر جدید</h4>
+            </div>
+            @using (Ajax.BeginForm("AddOrUpdate", "Operator", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "addOperatorConfirm" }, new { id = "addOperatorForm", @class = "form-horizontal" }))
+            {
+                <div class="modal-body">
+                    <!-- BEGIN FORM-->
+
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.AntiForgeryToken()
+                    @*<div class="row mb-3 operGenUTitleBox">
+                            <div class="col-md-12 text-center">
+                                <span class="label bg-green">
+                                    <span>نام کاربری : </span>
+                                    <strong>
+                                        <bdi></bdi>
+                                    </strong>
+                                </span>
+                            </div>
+                        </div>*@
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control dl-ar" })
+                                        @Html.ValidationMessageFor(model => model.UserName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FirstName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Type, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.DropDownListFor(model => model.Type, types, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Type)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12@(isUpdate?" hide":"")">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Password)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12@(isUpdate?" hide":"")">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9 pos-relative">
+                                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn green pull-right"><i class="fa fa-check"></i>ذخیره تغییرات</button>
+                    <button type="button" class="btn default pull-left" data-dismiss="modal">انصراف</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

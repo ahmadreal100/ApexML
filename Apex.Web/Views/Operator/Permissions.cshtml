@@ -1,0 +1,160 @@
+﻿@using Apex.Core.Entities.UserE
+@using Apex.Service.ViewModels.Account
+@using Apex.Shared.Extensions
+@using Apex.Web.Models
+@model List<MenuPermissionViewModel>
+
+@section styles
+{
+    <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/bootstrap-switch/css/bootstrap-switch-rtl.min.css"/>
+}
+
+@{
+    var layoutMenu = (List<LayoutMenu>) ViewBag.LayoutMenuList;
+    var permissions = Model ?? new List<MenuPermissionViewModel>();
+    var user = (User) ViewBag.Operator;
+}
+
+@functions
+{
+    public int Index;
+}
+
+@helper PermissionLayoutHelperResult(List<LayoutMenu> menus, List<MenuPermissionViewModel> permissions)
+{
+    foreach (var menu in menus)
+    {
+        <li indic-li>
+            @{
+                var p = permissions.FirstOrDefault(x => x.MenuId == menu.Key);
+            }
+            @if (menu.Hide)
+            {
+                <span class="ar-checkbox">
+                    <input id="@( $"key_{menu.Key}")" type="checkbox" menuinput name="MenuIds" value="@menu.Key" ch
+                           @( new HtmlString("checked=\"checked\""))/>
+                </span>
+                <label class="font-grey-gallery user-select-none">@menu.Text</label>
+            }
+            else
+            {
+                <span class="ar-checkbox">
+                    <input id="@( $"key_{menu.Key}")" type="checkbox" menuinput name="MenuIds" value="@menu.Key"
+                           @( p != null ? new HtmlString("checked=\"checked\"") : new HtmlString(""))/>
+                    <label for="@( $"key_{menu.Key}")" class="font-aqua"></label>
+                </span>
+                <label for="@( $"key_{menu.Key}")" class="font-grey-gallery user-select-none">@menu.Text</label>
+            }
+            @if (!menu.AddUrl.IsNeu() || !menu.EditUrl.IsNeu() || !menu.DeleteUrl.IsNeu())
+            {
+                <div class="upSubPermission">
+                    <div class="subPermission">
+                        @if (!menu.AddUrl.IsNeu())
+                        {
+                            <span indic-submenu>
+                                <span class="ar-checkbox">
+                                    <input id="@( $"key_Add_{menu.Key}")" type="checkbox" submenuinput name="AddIds" value="@menu.Key"
+                                           @( (p?.Add ?? false) ? new HtmlString("checked=\"checked\"") : new HtmlString(""))/>
+                                    <label for="@( $"key_Add_{menu.Key}")" class="font-green"></label>
+                                </span>
+                                <label for="@( $"key_Add_{menu.Key}")" class="user-select-none">افزودن</label>
+                            </span>
+                        }
+                        @if (!menu.EditUrl.IsNeu())
+                        {
+                            <span indic-submenu>
+                                <span class="ar-checkbox">
+                                    <input id="@( $"key_Edit_{menu.Key}")" type="checkbox" submenuinput name="EditIds" value="@menu.Key"
+                                           @( (p?.Edit ?? false) ? new HtmlString("checked=\"checked\"") : new HtmlString(""))/>
+                                    <label for="@( $"key_Edit_{menu.Key}")" class="font-blue"></label>
+                                </span>
+                                <label for="@( $"key_Edit_{menu.Key}")" class="user-select-none">ویرایش</label>
+                            </span>
+                        }
+                        @if (!menu.DeleteUrl.IsNeu())
+                        {
+                            <span indic-submenu>
+                                <span class="ar-checkbox">
+                                    <input id="@( $"key_Del_{menu.Key}")" type="checkbox" submenuinput name="DeleteIds" value="@menu.Key"
+                                           @( (p?.Delete ?? false) ? new HtmlString("checked=\"checked\"") : new HtmlString(""))/>
+                                    <label for="@( $"key_Del_{menu.Key}")" class="font-red"></label>
+                                </span>
+                                <label for="@( $"key_Del_{menu.Key}")" class="user-select-none">حذف</label>
+                            </span>
+                        }
+                    </div>
+                </div>
+            }
+            @if (menu.SubMenus.Any())
+            {
+                <ul>
+                    @PermissionLayoutHelperResult(menu.SubMenus, permissions)
+                </ul>
+            }
+        </li>
+    }
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet green box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-sitemap"></i>سطح دسترسی
+
+                            @(user?.FirstName == null ? "" : $"\"{user.FirstName}\"")
+                        </div>
+                        <div class="tools">
+                            <a href="@Url.Action("Index")" class="btn default red-stripe btn-sm">
+                                بازگشت
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        @using (Ajax.BeginForm("SetPermissions", "Operator", null, new AjaxOptions {HttpMethod = "POST", OnComplete = "permissionConfirm"}, new {id = "permissionForm", @class = "form-horizontal", autocomplete = "off"}))
+                        {
+                            @Html.Hidden("Id", user?.Id)
+                            @Html.AntiForgeryToken()
+                            <div class="row">
+                                <div class="col-xs-12 text-right">
+                                    <div class="ar-checkbox">
+                                        <input id="checkAll" type="checkbox"/>
+                                        <label for="checkAll">انتخاب همه</label>
+                                    </div>
+                                    <hr/>
+                                </div>
+                            </div>
+                            <!-- BEGIN FORM-->
+
+                            <div class="row">
+                            </div>
+                            <ul class="permUl">
+                                @PermissionLayoutHelperResult(layoutMenu, permissions)
+                            </ul>
+                            <!-- END FORM-->
+                            <div class="modal-footer" type="submit">
+                                <button class="btn green"><i class="fa fa-check"></i>ذخیره تغییرات</button>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="~/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/permissions.js?@App.GV"></script>
+}

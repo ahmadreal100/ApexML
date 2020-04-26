@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFile": "Content/site.css",
+    "inputFile": "Content/site.scss"
+  },
+  {
+    "outputFile": "Areas/Theme1/Content/site.css",
+    "inputFile": "Areas/Theme1/Content/site.scss"
+  },
+  {
+    "outputFile": "Areas/Theme1/Content/main.css",
+    "inputFile": "Areas/Theme1/Content/main.scss"
+  },
+  {
+    "outputFile": "Areas/Theme1/Content/base-rtl.css",
+    "inputFile": "Areas/Theme1/Content/base-rtl.scss"
+  },
+  {
+    "outputFile": "Areas/Theme1/Content/base.css",
+    "inputFile": "Areas/Theme1/Content/base.scss"
+  }
+]

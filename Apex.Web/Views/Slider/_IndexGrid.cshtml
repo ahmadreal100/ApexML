@@ -1,0 +1,41 @@
+﻿@using Apex.Service.ViewModels.Shop
+@model IQueryable<Apex.Service.ViewModels.Shop.SliderViewModel>
+
+@(Html
+      .Grid(Model)
+      .Build(columns =>
+      {
+          columns.Add().Titled("#").Css("ar-rear-no").Sortable(false).Filterable(false);
+//          columns.Add(x => x.Location).Titled("موقعیت");
+          columns.Add(x => x.Pictures.Count).Titled("تعداد تصویر");
+          columns.Add().Titled("").Sortable(false).Filterable(false)
+              .RenderedAs(x => new HtmlString(OptionColumn(x).ToString()));
+      })
+      .Empty("موردی یافت نشد")
+      .Id("indexGrid")
+      .Pageable(pager =>
+      {
+          pager.PageSizes = App.MvcGridPagerSizes;
+          pager.PagesToDisplay = 5;
+          pager.RowsPerPage = 10;
+          pager.ShowPageSizes = true;
+      })
+      .Filterable()
+      .Sortable()
+      .AppendCss("table-hover")
+      )
+
+@helper OptionColumn(SliderViewModel obj)
+{
+    <div class="el-options">
+        <i class="fa fa-ellipsis-v"></i>
+        <ul>
+            <li>
+                <a data-delslider="@obj.Id" data-text="اسلایدر"><i class="fa fa-trash"></i>حذف</a>
+            </li>
+            <li>
+                <a data-editslider="@obj.Id"><i class="fa fa-edit"></i>ویرایش</a>
+            </li>
+        </ul>
+    </div>
+}

@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "allowJs": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "sourceMap": true,
+    "target": "ES2015",
+    "typeRoots": ["src/types", "node_modules/@types"],
+    "outDir": "./../Build"
+  },
+  "include": ["src/**/*"]
+}

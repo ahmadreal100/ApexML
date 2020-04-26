@@ -1,0 +1,82 @@
+﻿@using Apex.Service.ViewModels.Account
+@using Apex.Core.Enums
+@using Apex.Shared.Helpers
+@model IQueryable<UserViewModel>
+
+@(Html
+      .Grid(Model)
+      .Build(columns =>
+      {
+          columns.Add(x => x.UserName).Titled("نام کاربری").Css("dl-ar")
+              .RenderedAs(x => new HtmlString($"<bdi>{x.UserName}</bdi>"));
+          columns.Add(x => x.FirstName).Titled("نام و نام خانوادگی");
+          columns.Add().Titled("تغییر رمز").Css("text-center operHeaderPass").RenderedAs(PassColumn).Sortable(false).Filterable(false);
+          columns.Add(x => x.Type).Css("text-center").Titled("اپراتور").WithFilterOptions(new List<SelectListItem>
+          {
+              new SelectListItem {Value = UserType.Operator.ToString(), Text = "اپراتور"},
+              new SelectListItem {Value = UserType.User.ToString(), Text = "کاربر"}
+          }).RenderedAs(SupColumn);
+          columns.Add().Titled("").Sortable(false).Filterable(false).RenderedAs(OptionColumn);
+      })
+      .Empty("موردی یافت نشد")
+      .Id("indexGrid")
+      .Pageable(pager =>
+      {
+          pager.PageSizes = App.MvcGridPagerSizes;
+          pager.PagesToDisplay = 5;
+          pager.RowsPerPage = 10;
+          pager.ShowPageSizes = true;
+      })
+      .Filterable()
+      .Sortable()
+      .AppendCss("table-hover")
+      )
+
+@helper SupColumn(UserViewModel obj)
+{
+    if (obj.IsOperator)
+    {
+        <i class="fa fa-star font-yellow-crusta font-3" style="text-shadow: 1px 1px 1px #888;"></i>
+    }
+    else
+    {
+        <i class="fa fa-star-o font-grey font-3"></i>
+    }
+}
+
+@helper PassColumn(UserViewModel obj)
+{
+    <div class="pos-relative">
+        <a miniform-opener class="btn btn-default my-2">
+            <i class="fa fa-unlock-alt"></i>
+        </a>
+        <div class="miniForm">
+            <div class="inn">
+                <input class="form-control dl-al">
+                <i per-ok="" data-id="@obj.Id" class="fa fa-check"></i>
+                <i per-cancel class="fa fa-times"></i>
+            </div>
+        </div>
+    </div>
+}
+
+@helper OptionColumn(UserViewModel obj)
+{
+    <div class="el-options">
+        <i class="fa fa-ellipsis-v"></i>
+        <ul>
+            <li>
+                <a data-deloperator="@obj.Id" data-text="@obj.UserName"><i class="fa fa-trash"></i>حذف</a>
+            </li>
+            <li>
+                <a data-editoperator="@obj.Id"><i class="fa fa-edit"></i>ویرایش</a>
+            </li>
+            @if (obj.IsOperator)
+            {
+                <li class="separate">
+                    <a href="@Url.Action("Permissions", new {id = obj.Id})"><i class="fa fa-diamond"></i>سطح دسترسی</a>
+                </li>
+            }
+        </ul>
+    </div>
+}

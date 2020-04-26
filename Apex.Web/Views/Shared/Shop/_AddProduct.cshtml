@@ -1,0 +1,191 @@
+﻿@{
+    var categories = (List<SelectListItem>)ViewBag.Categories ?? new List<SelectListItem>();
+}
+@using Apex.Web.Helpers
+@model Apex.Service.ViewModels.Shop.ProductViewModel
+<div class="modal fade" id="mdlAddProduct" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">@(Model != null && Model.Id > 0 ? "ویرایش مطلب" : "مطلب جدید")</h4>
+            </div>
+            @using (Ajax.BeginForm("AddOrUpdate", "Product", null, new AjaxOptions { HttpMethod = "Post", OnComplete = "addProductComplete" }, new { @class = "form-horizontal" }))
+            {
+                <div class="modal-body">
+                    <!-- BEGIN FORM-->
+
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.AntiForgeryToken()
+                    <div class="form-body pt-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tabGeneral" data-toggle="tab">
+                                            عمومی
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#tabPictures" data-toggle="tab">
+                                            تصویر
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#tabTags" data-toggle="tab">
+                                            برچسب ها
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade active in" id="tabGeneral">
+                                        <div class="row mt-5">
+                                            <div class="col-xs-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-xs-12">
+                                                        @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+                                                    </div>
+                                                    <div class="col-xs-12 pos-relative">
+                                                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.Title)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-xs-12">
+                                                        @Html.LabelFor(model => model.CategoryId, new { @class = "control-label" })
+                                                    </div>
+                                                    <div class="col-xs-12 pos-relative">
+                                                        @Html.DropDownListFor(model => model.CategoryId, categories, "-- انتخاب --", new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.CategoryId)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="col-xs-12">
+                                                        @Html.LabelFor(model => model.FullDescription, new { @class = "control-label" })
+                                                    </div>
+                                                    <div class="col-xs-12 pos-relative">
+                                                        @Html.TextAreaFor(model => model.FullDescription)
+                                                        @Html.ValidationMessageFor(model => model.FullDescription)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tabTags">
+                                        <div class="row mt-5" indic>
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="col-xs-12 pos-relative">
+                                                        @Html.TextBoxFor(model => model.TagsInput, new { buildtaginput = "", value = Model?.TagsInput ?? "", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><div class="tab-pane fade" id="tabPictures">
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <p class="font-green"><i class="fa fa-picture-o px-2"></i><small>سایز مناسب : 335x425 پیکسل</small></p>
+                                                <div class="form-group">
+                                                    <div class="col-xs-12 text-center">
+                                                        <table class="table table-bordered table-hover table-condensed table-responsive table-scrollable-borderless">
+                                                            <thead class="bg-blue-madison thead-lg">
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>تصویر</th>
+                                                                    <th>اولویت نمایش</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="pictureContainer">
+                                                                @if (Model != null)
+                                                                {
+                                                                    for (var i = 0; i < (Model?.Pictures?.Count ?? 0); i++)
+                                                                    {
+                                                                        <tr indic>
+                                                                            <td no class="px-3">@(i + 1)</td>
+                                                                            <td cen style="width: 13%">
+                                                                                @Html.Hidden($"Pictures[{i}].LinkOld", Model?.Pictures?[i].Link)
+                                                                                @Html.HiddenFor(model => model.Pictures[i].Link)
+                                                                                <a><img upload-img="" src="@(Model?.Pictures?[i].Link ?? App.NoPic)" class="img-tbl" /></a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.TextBoxFor(model => model.Pictures[i].DisplayOrder, new { preventkey = "13", arval = "digit|nodot|nocomma", arvalmin = "0", @class = "form-control" })
+                                                                            </td>
+                                                                            <td cen>
+                                                                                <a class="font-red" del><i class="fa fa-trash"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                        <hr class="pcs-dashed" />
+                                                        <a id="addPicture" class="btn blue-madison"><i class="fa fa-plus"></i>ردیف جدید</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row"></div>
+                                <div class="clearfix margin-bottom-20"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn green pull-right"><i class="fa fa-check"></i>ذخیره تغییرات</button>
+                    <button type="button" class="btn default pull-left" data-dismiss="modal">انصراف</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!--------------------------------------- Templates -------------------------------------->
+
+<script id="specificationTemplate" type="text/x-handlebars-template">
+    <tr indic>
+        <td no class="px-3"></td>
+        <td>
+            <input id="Specifications_0__Title" name="Specifications[0].Title" class="form-control" preventkey="13" />
+        </td>
+        <td>
+            <input id="Specifications_0__Value" name="Specifications[0].Value" class="form-control" preventkey="13" />
+        </td>
+        <td>
+            <input id="Specifications_0__Unit" name="Specifications[0].Unit" class="form-control" preventkey="13" />
+        </td>
+        <td>
+            <input id="Specifications_0__DisplayOrder" name="Specifications[0].DisplayOrder" class="form-control" arval="digit|nodot|nocomma" arvalmin="0" value="0" preventkey="13" />
+        </td>
+        <td cen>
+            <a class="font-red" del><i class="fa fa-trash"></i></a>
+        </td>
+    </tr>
+</script>
+
+<script id="pictureTemplate" type="text/x-handlebars-template">
+    <tr indic>
+        <td no class="px-3"></td>
+        <td cen style="width:13%">
+            @Html.Hidden("Pictures[0].Link")
+            <a><img upload-img src="@App.NoPic" class="img-tbl" /></a>
+        </td>
+        <td>
+            @Html.TextBox("Pictures[0].DisplayOrder", "0", new { preventkey = "13", arval = "digit|nodot|nocomma", arvalmin = "0", @class = "form-control" })
+        </td>
+        <td cen>
+            <a class="font-red" del><i class="fa fa-trash"></i></a>
+        </td>
+    </tr>
+</script>
+
+<!--------------------------------------- Templates -------------------------------------->

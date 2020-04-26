@@ -1,0 +1,56 @@
+﻿@using Apex.Shared.Helpers
+@model Apex.Service.ViewModels.Shop.CommentViewModel
+<div class="modal fade" id="mdlShowComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">نمایش دیدگاه</h4>
+            </div>
+            <div class="modal-body pt-0">
+                <!-- BEGIN FORM-->
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <input id="cominfo" type="hidden" data-id="@Model.Id" data-seen="@Model.Seen.ToString().ToLower()" />
+                                <span class="control-label">کد : </span>
+                                <span class="label bg-green mx-3 px-4 label-sm">@Model.Id</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <span class="control-label">موبایل : </span>
+                                <span>@Model.UserUserName</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <span class="control-label">نام : </span>
+                                <span>@Model.UserFirstName</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <span class="control-label">تاریخ : </span>
+                                <bdi>@Model.AddedDate.ToPersian("yyyy/MM/dd HH:mm")</bdi>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="pcs-dashed my-2" />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <span class="control-label">دیدگاه : </span>
+                                <p class="ws-pre-wrap">@Model.Content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

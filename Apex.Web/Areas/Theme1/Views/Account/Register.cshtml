@@ -1,0 +1,54 @@
+@using Apex.Service.Translations
+@model Apex.Service.ViewModels.Account.RegisterDto
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col-xl-4 my-5">
+        <div class="card">
+            <div class="card-header">@Str.register</div>
+            <div class="card-body">
+                <div>
+                    @using (Ajax.BeginForm("RegisterConfirm", "Account", null,
+                        new AjaxOptions { HttpMethod = "POST", OnComplete = "registerComplete" },
+                        new { autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="control-group">
+                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "txt", required = "", title = "", type = "tel" })
+                            @Html.LabelFor(x => x.PhoneNumber)
+                            @Html.ValidationMessageFor(x => x.PhoneNumber)
+                        </div>
+                        <div class="control-group">
+                            @Html.TextBoxFor(x => x.FirstName, new { @class = "txt", required = "", title = "" })
+                            @Html.LabelFor(x => x.FirstName)
+                            @Html.ValidationMessageFor(x => x.FirstName)
+                        </div>
+                        <div class="control-group">
+                            @Html.PasswordFor(x => x.Password, new { @class = "txt", required = "", title = "" })
+                            @Html.LabelFor(x => x.Password)
+                            @Html.ValidationMessageFor(x => x.Password)
+                        </div>
+                        <div class="control-group">
+                            @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "txt", required = "", title = "" })
+                            @Html.LabelFor(x => x.ConfirmPassword)
+                            @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                        </div>
+                        <div class="control-group captcha-box">
+                            @Html.TextBox("ArCaptcha", "", new { @class = "txt", required = "", title = "" })
+                            @Html.Label("ArCaptcha", Str.securityPicture)
+                            @Html.ValidationMessage("ArCaptcha")
+                            <img src="captcha?v=1" onclick="recaptcha()" title="@Str.refresh" />
+                        </div>
+                        <button class="btn btn-primary btn-block bg-tools">@Str.register</button>
+                    }
+                </div>
+                <p class="small mt-4 mb-0">
+                    <span>@($"{Str.areYouMember}{Str.qm}") </span><a href="@Url.RouteUrl("LogIn")">@Str.login2</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    @Html.Partial("_Validation")
+    <script src="~/Areas/Theme1/Scripts/Build/account/register.js"></script>
+}
